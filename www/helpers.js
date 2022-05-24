@@ -458,8 +458,15 @@ module.exports = function init(global, jsUtil, cookieHandler, messages, base64, 
       return onFinished(result);
     }
 
-    if (entry.value[1] instanceof global.Blob || entry.value[1] instanceof global.File) {
+    if (
+          entry.value[1] instanceof global.Blob  ||
+          entry.value[1].constructor.name === "Blob" ||
+          entry.value[1] instanceof global.File ||
+          entry.value[1].constructor.name === "File"
+          ) {
       var reader = new global.FileReader();
+      const zoneOriginalInstance = (reader as any)["__zone_symbol__originalInstance"];
+      reader = zoneOriginalInstance || reader;
 
       reader.onload = function () {
         result.buffers.push(base64.fromArrayBuffer(reader.result));

@@ -5,7 +5,7 @@ module.exports = function init(global) {
   if (init.debug) {
     interface.Iterator = Iterator;
   }
-  
+
   function FormData() {
     this.__items = [];
   }
@@ -13,7 +13,7 @@ module.exports = function init(global) {
   FormData.prototype.append = function(name, value, filename) {
     if (global.File && value instanceof global.File) {
       // nothing to do
-    } else if (global.Blob && value instanceof global.Blob) {
+    } else if (global.Blob && value instanceof global.Blob || value.constructor.name === "Blob") {
       // mimic File instance by adding missing properties
       value.lastModifiedDate = new Date();
       value.name = filename !== undefined ? filename : 'blob';
